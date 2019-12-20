@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace poc_selenium_dotnet
+namespace AutomationResources
 {
     [TestClass]
     public class UnitTest1
