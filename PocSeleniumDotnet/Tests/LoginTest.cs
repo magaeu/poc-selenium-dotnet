@@ -42,10 +42,29 @@ namespace PocSeleniumDotnet
         }
 
         [TestMethod]
+        [Description("Checks if password required message is displayed")]
         public void LoginWithoutPasswordTest() 
         {
             credentials.FullName = "test";
             credentials.Password = "";
+
+            homePage = new HomePage(Driver);
+            homePage.GoTo();
+            var login = homePage.Login.FillCredentialsWithoutRequiredFieldAndClick(credentials);
+            var expectedErrorMsg = "Password is invalid";
+            var actualErrorMsg = login.ErrorMsgText;
+
+            Assert.AreEqual(actualErrorMsg, expectedErrorMsg,
+                $"Expected error msg {expectedErrorMsg}, " + 
+                $"Actual error msg {actualErrorMsg}");
+        }
+
+        [TestMethod]
+        [Description("Checks if invalid password message is displayed")]
+        public void LoginWithInvalidPasswordTest()
+        {
+            credentials.FullName = "test";
+            credentials.Password = "45678";
 
             homePage = new HomePage(Driver);
             homePage.GoTo();
