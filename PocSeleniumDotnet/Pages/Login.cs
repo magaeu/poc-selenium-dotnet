@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using OpenQA.Selenium;
 
 namespace PocSeleniumDotnet
@@ -8,13 +10,11 @@ namespace PocSeleniumDotnet
         private IWebElement FullNameField => Driver.FindElement(By.Id("name"));
         private IWebElement PasswordField => Driver.FindElement(By.Id("password"));
         private IWebElement LoginBtn => Driver.FindElement(By.Id("login"));
-        private IWebElement ErrorMsg => Driver.FindElement(By.ClassName("invalid-feedback"));
+        private IList<IWebElement> ErrorMessages => Driver.FindElements(By.ClassName("invalid-feedback"));
 
-        public string ErrorMsgText => ErrorMsg.Text;
+        public string ErrorMsgText => ErrorElement()?.Text;
 
-        public Login(IWebDriver driver) : base(driver)
-        {
-        }
+        public Login(IWebDriver driver) : base(driver) {}
 
         public Profile FillValidCredentialsAndClick(Credentials credentials)
         {
@@ -24,7 +24,7 @@ namespace PocSeleniumDotnet
             return new Profile(Driver);
         }
 
-        internal Login FillCredentialsWithoutRequiredFieldAndClick(Credentials credentials)
+        public Login FillCredentialsWithoutRequiredFieldAndClick(Credentials credentials)
         {
             FillCredentials(credentials);
             LoginBtn.Click();
@@ -38,6 +38,17 @@ namespace PocSeleniumDotnet
             FullNameField.SendKeys(credentials.FullName);
             PasswordField.Clear();
             PasswordField.SendKeys(credentials.Password);
+        }
+
+        private IWebElement ErrorElement()
+        {
+            var element = ErrorMessages.FirstOrDefault(e => e.Displayed);
+            if (element != null) {
+                HighlightElementUsingJavaScript(element);
+                return element;
+            }
+
+            return null;
         }
     }
 }

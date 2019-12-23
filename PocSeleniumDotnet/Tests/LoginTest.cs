@@ -7,7 +7,7 @@ namespace PocSeleniumDotnet
     public class LoginTest : BaseTest
     {
         Credentials credentials = new Credentials();
-        HomePage homePage;
+        private HomePage homePage;
 
         [TestMethod]
         [Description("Checks if profile is loaded after login with valid credentials")]
@@ -34,10 +34,28 @@ namespace PocSeleniumDotnet
             homePage.GoTo();
             var login = homePage.Login.FillCredentialsWithoutRequiredFieldAndClick(credentials);
             var expectedErrorMsg = "Please provide your full name";
+            var actualErrorMsg = login.ErrorMsgText;
 
-            Assert.AreEqual(login.ErrorMsgText, expectedErrorMsg,
+            Assert.AreEqual(actualErrorMsg, expectedErrorMsg,
                 $"Expected error msg {expectedErrorMsg}, " + 
-                $"Actual error msg {login.ErrorMsgText}");
+                $"Actual error msg {actualErrorMsg}");
+        }
+
+        [TestMethod]
+        public void LoginWithoutPasswordTest() 
+        {
+            credentials.FullName = "test";
+            credentials.Password = "";
+
+            homePage = new HomePage(Driver);
+            homePage.GoTo();
+            var login = homePage.Login.FillCredentialsWithoutRequiredFieldAndClick(credentials);
+            var expectedErrorMsg = "Password is invalid";
+            var actualErrorMsg = login.ErrorMsgText;
+
+            Assert.AreEqual(actualErrorMsg, expectedErrorMsg,
+                $"Expected error msg {expectedErrorMsg}, " + 
+                $"Actual error msg {actualErrorMsg}");
         }
 
     }

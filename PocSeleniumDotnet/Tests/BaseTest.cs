@@ -7,7 +7,7 @@ namespace PocSeleniumDotnet
     [TestClass]
     public class BaseTest
     {
-        public IWebDriver Driver { get; private set; }
+        protected IWebDriver Driver { get; private set; }
 
         [TestInitialize]
         public void Setup()
@@ -25,5 +25,6 @@ namespace PocSeleniumDotnet
             Driver.Quit();
             Driver = null;
         }
+
     }
 }
