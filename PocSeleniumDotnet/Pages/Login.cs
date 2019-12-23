@@ -24,6 +24,14 @@ namespace PocSeleniumDotnet
             return new Profile(Driver);
         }
 
+        internal Login FillCredentialsWithoutRequiredFieldAndClick(Credentials credentials)
+        {
+            FillCredentials(credentials);
+            LoginBtn.Click();
+
+            return new Login(Driver);
+        }
+
         private void FillCredentials(Credentials credentials)
         {
             FullNameField.Clear();
@@ -31,6 +39,5 @@ namespace PocSeleniumDotnet
             PasswordField.Clear();
             PasswordField.SendKeys(credentials.Password);
         }
-
     }
 }
