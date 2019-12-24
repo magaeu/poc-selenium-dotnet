@@ -38,8 +38,8 @@ namespace PocSeleniumDotnet
             var actualErrorMsg = login.ErrorMsgText;
 
             Assert.AreEqual(expectedErrorMsg, actualErrorMsg,
-                $"Expected error msg {expectedErrorMsg}, " + 
-                $"Actual error msg {actualErrorMsg}");
+                $"Expected error msg {expectedErrorMsg}, "
+                + $"Actual error msg {actualErrorMsg}");
         }
 
         [TestMethod]
@@ -59,8 +59,23 @@ namespace PocSeleniumDotnet
             var actualErrorMsg = login.ErrorMsgText;
 
             Assert.AreEqual(expectedErrorMsg, actualErrorMsg,
-                $"Expected error msg {expectedErrorMsg}, " + 
-                $"Actual error msg {actualErrorMsg}");
+                $"Expected error msg {expectedErrorMsg}, "
+                + $"Actual error msg {actualErrorMsg}");
+        }
+
+        [TestMethod]
+        public void LoginWithoutRequiredFieldsTest()
+        {
+            credentials.FullName = "";
+            credentials.Password = "";
+
+            homePage = new HomePage(Driver);
+            homePage.GoTo();
+            var login = homePage.Login.FillCredentialsWithoutRequiredFieldAndClick(credentials);
+
+            List<string> expectedErrorMessages = new List<string> {"Please provide your full name", "Password is invalid"};
+            CollectionAssert.AreEqual(expectedErrorMessages,
+                                      login.ErrorMsgTexts);
         }
 
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using OpenQA.Selenium;
@@ -14,7 +15,23 @@ namespace PocSeleniumDotnet
 
         public string ErrorMsgText => ErrorElement()?.Text;
 
-        public Login(IWebDriver driver) : base(driver) {}
+        public List<string> ErrorMsgTexts
+        {
+            get
+            {
+                var elements = ErrorMessages.Where(e => e.Displayed);
+                List<string> errorTexts = new List<string>{};
+                foreach (var item in elements)
+                {
+                    HighlightElementUsingJavaScript(item);
+                    errorTexts.Add(item.Text);
+                }
+
+                return errorTexts;
+            }
+        }
+
+        public Login(IWebDriver driver) : base(driver) { }
 
         public Profile FillValidCredentialsAndClick(Credentials credentials)
         {
@@ -43,12 +60,14 @@ namespace PocSeleniumDotnet
         private IWebElement ErrorElement()
         {
             var element = ErrorMessages.FirstOrDefault(e => e.Displayed);
-            if (element != null) {
+            if (element != null)
+            {
                 HighlightElementUsingJavaScript(element);
                 return element;
             }
 
             return null;
         }
+
     }
 }
