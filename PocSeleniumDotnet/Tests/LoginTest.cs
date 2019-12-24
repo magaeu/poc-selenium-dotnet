@@ -64,6 +64,7 @@ namespace PocSeleniumDotnet
         }
 
         [TestMethod]
+        [Description("Checks if required messages is displayed")]
         public void LoginWithoutRequiredFieldsTest()
         {
             credentials.FullName = "";
