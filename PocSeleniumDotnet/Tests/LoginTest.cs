@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace PocSeleniumDotnet
@@ -36,7 +37,7 @@ namespace PocSeleniumDotnet
             var expectedErrorMsg = "Please provide your full name";
             var actualErrorMsg = login.ErrorMsgText;
 
-            Assert.AreEqual(actualErrorMsg, expectedErrorMsg,
+            Assert.AreEqual(expectedErrorMsg, actualErrorMsg,
                 $"Expected error msg {expectedErrorMsg}, " + 
                 $"Actual error msg {actualErrorMsg}");
         }
@@ -57,7 +58,7 @@ namespace PocSeleniumDotnet
             var expectedErrorMsg = "Password is invalid";
             var actualErrorMsg = login.ErrorMsgText;
 
-            Assert.AreEqual(actualErrorMsg, expectedErrorMsg,
+            Assert.AreEqual(expectedErrorMsg, actualErrorMsg,
                 $"Expected error msg {expectedErrorMsg}, " + 
                 $"Actual error msg {actualErrorMsg}");
         }
